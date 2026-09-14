@@ -1,7 +1,9 @@
 package com.upn.zonestylebackend.service;
 
 import lombok.RequiredArgsConstructor;
+import com.upn.zonestylebackend.model.Rol;
 import com.upn.zonestylebackend.model.Usuario;
+import com.upn.zonestylebackend.repository.RolRepository;
 import com.upn.zonestylebackend.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 public class UsuarioService {
 
     private final UsuarioRepository repository;
+    private final RolRepository rolRepository;
+
 
     public Usuario validAndSave(
             String nombres,
@@ -27,7 +31,13 @@ public class UsuarioService {
         usuario.setCorreo(correo);
         usuario.setTelefono(telefono);
         usuario.setPassword(password);
-        usuario.setIdRol(idRol);
+
+
+        Rol rol = rolRepository.findById(idRol)
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+
+        usuario.setRol(rol);
+
 
         return repository.save(usuario);
     }
