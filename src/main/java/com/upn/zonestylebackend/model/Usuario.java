@@ -18,8 +18,11 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Integer idUsuario;
 
-    @Column(name = "id_rol")
-    private Integer idRol;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_rol", nullable = false)
+    private Rol rol;
+
 
     @Column(name = "nombres", length = 100)
     private String nombres;
