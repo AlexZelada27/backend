@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.controller;
 
-import com.upn.zonestylebackend.model.Usuario;
-import com.upn.zonestylebackend.service.UsuarioService;
+import com.upn.zonestylebackend.model.Empleado;
+import com.upn.zonestylebackend.service.EmpleadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,34 +9,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/Usuario")
+@RequestMapping("/v1/Empleado")
 @RequiredArgsConstructor
-public class UsuarioController {
+public class EmpleadoController {
 
-    private final UsuarioService service;
+    private final EmpleadoService service;
 
     @GetMapping
-    public List<Usuario> getAll() {
+    public List<Empleado> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getById(@PathVariable Integer id) {
+    public ResponseEntity<Empleado> getById(@PathVariable Integer id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Usuario create(@RequestBody Usuario usuario) {
-        return service.save(usuario);
+    public Empleado create(@RequestBody Empleado empleado) {
+        return service.save(empleado);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Integer id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Empleado> update(@PathVariable Integer id, @RequestBody Empleado empleado) {
         return service.findById(id).map(existing -> {
-            usuario.setIdUsuario(existing.getIdUsuario());
-            return ResponseEntity.ok(service.save(usuario));
+            empleado.setIdEmpleado(existing.getIdEmpleado());
+            return ResponseEntity.ok(service.save(empleado));
         }).orElse(ResponseEntity.notFound().build());
     }
 

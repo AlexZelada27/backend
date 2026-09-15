@@ -1,5 +1,6 @@
 package com.upn.zonestylebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
-
 
 @Data
 @NoArgsConstructor
@@ -22,7 +22,6 @@ public class Reserva {
     @EqualsAndHashCode.Include
     private Integer idReserva;
 
-
     @ManyToOne
     @JoinColumn(
             name = "id_cliente",
@@ -30,7 +29,6 @@ public class Reserva {
             foreignKey = @ForeignKey(name = "FK_RESERVA_CLIENTE")
     )
     private Cliente cliente;
-
 
     @ManyToOne
     @JoinColumn(
@@ -40,7 +38,6 @@ public class Reserva {
     )
     private Empleado empleado;
 
-
     @ManyToOne
     @JoinColumn(
             name = "id_horario_fijo",
@@ -48,7 +45,6 @@ public class Reserva {
             foreignKey = @ForeignKey(name = "FK_RESERVA_HORARIO_FIJO")
     )
     private HorarioFijo horarioFijo;
-
 
     @ManyToOne
     @JoinColumn(
@@ -58,7 +54,6 @@ public class Reserva {
     )
     private Pago pago;
 
-
     @ManyToOne
     @JoinColumn(
             name = "id_sala",
@@ -67,14 +62,11 @@ public class Reserva {
     )
     private SalaEstudio sala;
 
-
     @Column(nullable = false, length = 30)
     private String estado;
 
-
     @Column(nullable = false)
     private LocalDate fechaReserva;
-
 
     @ManyToOne
     @JoinColumn(
@@ -84,7 +76,7 @@ public class Reserva {
     )
     private Horario horario;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
     private List<ReservaServicio> servicios;
 }

@@ -1,5 +1,6 @@
 package com.upn.zonestylebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,6 @@ public class Servicio {
     @EqualsAndHashCode.Include
     private Integer idServicio;
 
-
     @ManyToOne
     @JoinColumn(
             name = "id_tipo_servicio",
@@ -29,15 +29,13 @@ public class Servicio {
     )
     private TipoServicio tipoServicio;
 
-
     @Column(nullable = false, length = 100)
     private String nombre;
-
 
     @Column(nullable = false)
     private Double precio;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
     private List<ReservaServicio> reservasServicios;
 }

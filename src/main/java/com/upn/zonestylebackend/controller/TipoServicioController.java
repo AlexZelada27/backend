@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.controller;
 
-import com.upn.zonestylebackend.model.Usuario;
-import com.upn.zonestylebackend.service.UsuarioService;
+import com.upn.zonestylebackend.model.TipoServicio;
+import com.upn.zonestylebackend.service.TipoServicioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,34 +9,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/Usuario")
+@RequestMapping("/v1/TipoServicio")
 @RequiredArgsConstructor
-public class UsuarioController {
+public class TipoServicioController {
 
-    private final UsuarioService service;
+    private final TipoServicioService service;
 
     @GetMapping
-    public List<Usuario> getAll() {
+    public List<TipoServicio> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getById(@PathVariable Integer id) {
+    public ResponseEntity<TipoServicio> getById(@PathVariable Integer id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Usuario create(@RequestBody Usuario usuario) {
-        return service.save(usuario);
+    public TipoServicio create(@RequestBody TipoServicio tipoServicio) {
+        return service.save(tipoServicio);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Integer id, @RequestBody Usuario usuario) {
+    public ResponseEntity<TipoServicio> update(@PathVariable Integer id, @RequestBody TipoServicio tipoServicio) {
         return service.findById(id).map(existing -> {
-            usuario.setIdUsuario(existing.getIdUsuario());
-            return ResponseEntity.ok(service.save(usuario));
+            tipoServicio.setIdTipoServicio(existing.getIdTipoServicio());
+            return ResponseEntity.ok(service.save(tipoServicio));
         }).orElse(ResponseEntity.notFound().build());
     }
 

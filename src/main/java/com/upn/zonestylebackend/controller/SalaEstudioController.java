@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.controller;
 
-import com.upn.zonestylebackend.model.Usuario;
-import com.upn.zonestylebackend.service.UsuarioService;
+import com.upn.zonestylebackend.model.SalaEstudio;
+import com.upn.zonestylebackend.service.SalaEstudioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,34 +9,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/Usuario")
+@RequestMapping("/v1/SalaEstudio")
 @RequiredArgsConstructor
-public class UsuarioController {
+public class SalaEstudioController {
 
-    private final UsuarioService service;
+    private final SalaEstudioService service;
 
     @GetMapping
-    public List<Usuario> getAll() {
+    public List<SalaEstudio> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getById(@PathVariable Integer id) {
+    public ResponseEntity<SalaEstudio> getById(@PathVariable Integer id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Usuario create(@RequestBody Usuario usuario) {
-        return service.save(usuario);
+    public SalaEstudio create(@RequestBody SalaEstudio salaEstudio) {
+        return service.save(salaEstudio);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Integer id, @RequestBody Usuario usuario) {
+    public ResponseEntity<SalaEstudio> update(@PathVariable Integer id, @RequestBody SalaEstudio salaEstudio) {
         return service.findById(id).map(existing -> {
-            usuario.setIdUsuario(existing.getIdUsuario());
-            return ResponseEntity.ok(service.save(usuario));
+            salaEstudio.setIdSala(existing.getIdSala());
+            return ResponseEntity.ok(service.save(salaEstudio));
         }).orElse(ResponseEntity.notFound().build());
     }
 

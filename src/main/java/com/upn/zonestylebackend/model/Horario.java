@@ -1,5 +1,6 @@
 package com.upn.zonestylebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,23 +22,19 @@ public class Horario {
     @EqualsAndHashCode.Include
     private Integer idHorario;
 
-
     @Column(nullable = false)
     private LocalDate fecha;
 
-
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private String horaInicio;
 
-
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private String horaFin;
-
 
     @Column(nullable = false)
     private Boolean reservado;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "horario", cascade = CascadeType.ALL)
     private List<Reserva> reservas;
 }

@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.controller;
 
-import com.upn.zonestylebackend.model.Usuario;
-import com.upn.zonestylebackend.service.UsuarioService;
+import com.upn.zonestylebackend.model.Cliente;
+import com.upn.zonestylebackend.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,34 +9,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/Usuario")
+@RequestMapping("/v1/Cliente")
 @RequiredArgsConstructor
-public class UsuarioController {
+public class ClienteController {
 
-    private final UsuarioService service;
+    private final ClienteService service;
 
     @GetMapping
-    public List<Usuario> getAll() {
+    public List<Cliente> getAll() {
         return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getById(@PathVariable Integer id) {
+    public ResponseEntity<Cliente> getById(@PathVariable Integer id) {
         return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Usuario create(@RequestBody Usuario usuario) {
-        return service.save(usuario);
+    public Cliente create(@RequestBody Cliente cliente) {
+        return service.save(cliente);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Integer id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Cliente> update(@PathVariable Integer id, @RequestBody Cliente cliente) {
         return service.findById(id).map(existing -> {
-            usuario.setIdUsuario(existing.getIdUsuario());
-            return ResponseEntity.ok(service.save(usuario));
+            cliente.setIdCliente(existing.getIdCliente());
+            return ResponseEntity.ok(service.save(cliente));
         }).orElse(ResponseEntity.notFound().build());
     }
 

@@ -1,14 +1,13 @@
 package com.upn.zonestylebackend.controller;
 
-import lombok.RequiredArgsConstructor;
 import com.upn.zonestylebackend.model.Rol;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.upn.zonestylebackend.service.RolService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// http://localhost:8080/v1/Rol
-// Inyeccion tipos: por metodo, por constructor, por atributo
+import java.util.List;
+
 @RestController
 @RequestMapping("/v1/Rol")
 @RequiredArgsConstructor
@@ -16,19 +15,37 @@ public class RolController {
 
     private final RolService service;
 
-    // Inyeccion por constructor
-    /*
-    public RolController(RolService service) {
-        this.service = service;
-    }
-    */
-
     @GetMapping
-    public Rol searchRol() {
+    public List<Rol> getAll() {
+        return service.findAll();
+    }
 
-        return service.validAndSave(
-                "Administrador",
-                "Administrador del sistema"
-        );
+    @GetMapping("/{id}")
+    public ResponseEntity<Rol> getById(@PathVariable Integer id) {
+        return service.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public Rol create(@RequestBody Rol rol) {
+        return service.save(rol);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Rol> update(@PathVariable Integer id, @RequestBody Rol rol) {
+        return service.findById(id).map(existing -> {
+            rol.setIdRol(existing.getIdRol());
+            return ResponseEntity.ok(service.save(rol));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        if (service.findById(id).isPresent()) {
+            service.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

@@ -1,5 +1,6 @@
 package com.upn.zonestylebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,15 +21,13 @@ public class Pago {
     @EqualsAndHashCode.Include
     private Integer idPago;
 
-
     @Column(nullable = false)
     private Double monto;
-
 
     @Column(nullable = false, length = 50)
     private String metodoPago;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "pago")
     private List<Reserva> reservas;
 }

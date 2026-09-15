@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.service;
 
-import com.upn.zonestylebackend.model.Rol;
-import com.upn.zonestylebackend.repository.RolRepository;
+import com.upn.zonestylebackend.model.Empleado;
+import com.upn.zonestylebackend.repository.EmpleadoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,20 +10,20 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RolService {
+public class EmpleadoService {
 
-    private final RolRepository repository;
+    private final EmpleadoRepository repository;
 
-    public List<Rol> findAll() {
+    public List<Empleado> findAll() {
         return repository.findAll();
     }
 
-    public Optional<Rol> findById(Integer id) {
+    public Optional<Empleado> findById(Integer id) {
         return repository.findById(id);
     }
 
-    public Rol save(Rol rol) {
-        return repository.save(rol);
+    public Empleado save(Empleado empleado) {
+        return repository.save(empleado);
     }
 
     public void deleteById(Integer id) {
