@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.controller;
 
 import com.upn.zonestylebackend.model.TipoServicio;
-import com.upn.zonestylebackend.service.TipoServicioService;
+import com.upn.zonestylebackend.service.Implementacion.TipoServicioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

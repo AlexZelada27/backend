@@ -1,4 +1,4 @@
-package com.upn.zonestylebackend.service;
+package com.upn.zonestylebackend.service.Implementacion;
 
 import com.upn.zonestylebackend.model.Servicio;
 import com.upn.zonestylebackend.repository.ServicioRepository;
