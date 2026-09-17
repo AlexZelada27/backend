@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.controller;
 
 import com.upn.zonestylebackend.model.Empleado;
-import com.upn.zonestylebackend.service.EmpleadoService;
+import com.upn.zonestylebackend.service.Implementacion.EmpleadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

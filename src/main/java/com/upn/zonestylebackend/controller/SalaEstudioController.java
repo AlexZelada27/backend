@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.controller;
 
 import com.upn.zonestylebackend.model.SalaEstudio;
-import com.upn.zonestylebackend.service.SalaEstudioService;
+import com.upn.zonestylebackend.service.Implementacion.SalaEstudioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
