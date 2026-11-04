@@ -1,5 +1,6 @@
 package com.upn.zonestylebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,11 +19,10 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Integer idUsuario;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Rol rol;
-
 
     @Column(name = "nombres", length = 100)
     private String nombres;

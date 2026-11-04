@@ -68,14 +68,6 @@ public class Reserva {
     @Column(nullable = false)
     private LocalDate fechaReserva;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "id_horario",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "FK_RESERVA_HORARIO")
-    )
-    private Horario horario;
-
     @JsonIgnore
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
     private List<ReservaServicio> servicios;

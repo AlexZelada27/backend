@@ -1,6 +1,5 @@
 package com.upn.zonestylebackend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,33 +7,30 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Horario {
+public class BloqueoFecha {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
-    private Integer idHorario;
+    private Integer idBloqueo;
 
     @Column(nullable = false)
     private LocalDate fecha;
 
-    @Column(nullable = false, length = 10)
-    private String horaInicio;
+    @ManyToOne
+    @JoinColumn(
+            name = "id_horario_fijo",
+            nullable = true,
+            foreignKey = @ForeignKey(name = "FK_BLOQUEO_HORARIO_FIJO")
+    )
+    private HorarioFijo horarioFijo;
 
-    @Column(nullable = false, length = 10)
-    private String horaFin;
-
-    @Column(nullable = false)
-    private Boolean reservado;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "horario", cascade = CascadeType.ALL)
-    private List<Reserva> reservas;
+    @Column(nullable = false, length = 150)
+    private String motivo;
 }

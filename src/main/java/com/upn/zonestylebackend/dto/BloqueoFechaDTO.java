@@ -9,11 +9,10 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HorarioDTO {
+public class BloqueoFechaDTO {
 
+    private Integer idBloqueo;
     private LocalDate fecha;
-    private String horaInicio;
-    private String horaFin;
-    private Boolean reservado;
+    private Integer idHorarioFijo;
+    private String motivo;
 }
-
