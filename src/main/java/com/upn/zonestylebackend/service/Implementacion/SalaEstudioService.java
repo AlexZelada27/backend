@@ -2,6 +2,7 @@ package com.upn.zonestylebackend.service.Implementacion;
 
 import com.upn.zonestylebackend.model.SalaEstudio;
 import com.upn.zonestylebackend.repository.ISalaEstudioRepository;
+import com.upn.zonestylebackend.service.ISalaEstudioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,23 +11,19 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class SalaEstudioService {
+public class SalaEstudioService implements ISalaEstudioService {
 
     private final ISalaEstudioRepository repository;
 
-    public List<SalaEstudio> findAll() {
-        return repository.findAll();
-    }
+    @Override
+    public List<SalaEstudio> findAll() { return repository.findAll(); }
 
-    public Optional<SalaEstudio> findById(Integer id) {
-        return repository.findById(id);
-    }
+    @Override
+    public Optional<SalaEstudio> findById(Integer id) { return repository.findById(id); }
 
-    public SalaEstudio save(SalaEstudio salaEstudio) {
-        return repository.save(salaEstudio);
-    }
+    @Override
+    public SalaEstudio save(SalaEstudio salaEstudio) { return repository.save(salaEstudio); }
 
-    public void deleteById(Integer id) {
-        repository.deleteById(id);
-    }
+    @Override
+    public void deleteById(Integer id) { repository.deleteById(id); }
 }

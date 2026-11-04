@@ -2,6 +2,7 @@ package com.upn.zonestylebackend.service.Implementacion;
 
 import com.upn.zonestylebackend.model.Servicio;
 import com.upn.zonestylebackend.repository.IServicioRepository;
+import com.upn.zonestylebackend.service.IServicioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,23 +11,19 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ServicioService {
+public class ServicioService implements IServicioService {
 
     private final IServicioRepository repository;
 
-    public List<Servicio> findAll() {
-        return repository.findAll();
-    }
+    @Override
+    public List<Servicio> findAll() { return repository.findAll(); }
 
-    public Optional<Servicio> findById(Integer id) {
-        return repository.findById(id);
-    }
+    @Override
+    public Optional<Servicio> findById(Integer id) { return repository.findById(id); }
 
-    public Servicio save(Servicio servicio) {
-        return repository.save(servicio);
-    }
+    @Override
+    public Servicio save(Servicio servicio) { return repository.save(servicio); }
 
-    public void deleteById(Integer id) {
-        repository.deleteById(id);
-    }
+    @Override
+    public void deleteById(Integer id) { repository.deleteById(id); }
 }

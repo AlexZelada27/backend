@@ -2,6 +2,7 @@ package com.upn.zonestylebackend.service.Implementacion;
 
 import com.upn.zonestylebackend.model.Cliente;
 import com.upn.zonestylebackend.repository.IClienteRepository;
+import com.upn.zonestylebackend.service.IClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,23 +11,19 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ClienteService {
+public class ClienteService implements IClienteService {
 
     private final IClienteRepository repository;
 
-    public List<Cliente> findAll() {
-        return repository.findAll();
-    }
+    @Override
+    public List<Cliente> findAll() { return repository.findAll(); }
 
-    public Optional<Cliente> findById(Integer id) {
-        return repository.findById(id);
-    }
+    @Override
+    public Optional<Cliente> findById(Integer id) { return repository.findById(id); }
 
-    public Cliente save(Cliente cliente) {
-        return repository.save(cliente);
-    }
+    @Override
+    public Cliente save(Cliente cliente) { return repository.save(cliente); }
 
-    public void deleteById(Integer id) {
-        repository.deleteById(id);
-    }
+    @Override
+    public void deleteById(Integer id) { repository.deleteById(id); }
 }

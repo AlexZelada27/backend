@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.controller;
 
 import com.upn.zonestylebackend.model.Horario;
-import com.upn.zonestylebackend.service.HorarioService;
+import com.upn.zonestylebackend.service.IHorarioService; // <-- IMPORTAR INTERFAZ
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,24 +13,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HorarioController {
 
-    private final HorarioService service;
+    private final IHorarioService service; // <-- USAR LA INTERFAZ
 
     @GetMapping
-    public List<Horario> getAll() {
-        return service.findAll();
-    }
+    public List<Horario> getAll() { return service.findAll(); }
 
     @GetMapping("/{id}")
     public ResponseEntity<Horario> getById(@PathVariable Integer id) {
-        return service.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return service.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Horario create(@RequestBody Horario horario) {
-        return service.save(horario);
-    }
+    public Horario create(@RequestBody Horario horario) { return service.save(horario); }
 
     @PutMapping("/{id}")
     public ResponseEntity<Horario> update(@PathVariable Integer id, @RequestBody Horario horario) {

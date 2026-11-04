@@ -2,6 +2,7 @@ package com.upn.zonestylebackend.service.Implementacion;
 
 import com.upn.zonestylebackend.model.Rol;
 import com.upn.zonestylebackend.repository.IRolRepository;
+import com.upn.zonestylebackend.service.IRolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,23 +11,19 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class RolService {
+public class RolService implements IRolService {
 
     private final IRolRepository repository;
 
-    public List<Rol> findAll() {
-        return repository.findAll();
-    }
+    @Override
+    public List<Rol> findAll() { return repository.findAll(); }
 
-    public Optional<Rol> findById(Integer id) {
-        return repository.findById(id);
-    }
+    @Override
+    public Optional<Rol> findById(Integer id) { return repository.findById(id); }
 
-    public Rol save(Rol rol) {
-        return repository.save(rol);
-    }
+    @Override
+    public Rol save(Rol rol) { return repository.save(rol); }
 
-    public void deleteById(Integer id) {
-        repository.deleteById(id);
-    }
+    @Override
+    public void deleteById(Integer id) { repository.deleteById(id); }
 }

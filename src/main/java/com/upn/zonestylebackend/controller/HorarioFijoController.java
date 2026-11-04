@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.controller;
 
 import com.upn.zonestylebackend.model.HorarioFijo;
-import com.upn.zonestylebackend.service.HorarioFijoService;
+import com.upn.zonestylebackend.service.IHorarioFijoService; // <-- IMPORTAR INTERFAZ
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,30 +13,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HorarioFijoController {
 
-    private final HorarioFijoService service;
+    private final IHorarioFijoService service; // <-- USAR LA INTERFAZ
 
     @GetMapping
-    public List<HorarioFijo> getAll() {
-        return service.findAll();
-    }
+    public List<HorarioFijo> getAll() { return service.findAll(); }
 
     @GetMapping("/{id}")
     public ResponseEntity<HorarioFijo> getById(@PathVariable Integer id) {
-        return service.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return service.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public HorarioFijo create(@RequestBody HorarioFijo horarioFijo) {
-        return service.save(horarioFijo);
-    }
+    public HorarioFijo create(@RequestBody HorarioFijo horarioFijo) { return service.save(horarioFijo); }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HorarioFijo> update(
-            @PathVariable Integer id,
-            @RequestBody HorarioFijo horarioFijo) {
-
+    public ResponseEntity<HorarioFijo> update(@PathVariable Integer id, @RequestBody HorarioFijo horarioFijo) {
         return service.findById(id).map(existing -> {
             horarioFijo.setIdHorarioFijo(existing.getIdHorarioFijo());
             return ResponseEntity.ok(service.save(horarioFijo));
@@ -45,12 +36,10 @@ public class HorarioFijoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-
         if (service.findById(id).isPresent()) {
             service.deleteById(id);
             return ResponseEntity.noContent().build();
         }
-
         return ResponseEntity.notFound().build();
     }
 }

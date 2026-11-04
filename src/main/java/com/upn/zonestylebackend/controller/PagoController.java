@@ -1,7 +1,7 @@
 package com.upn.zonestylebackend.controller;
 
 import com.upn.zonestylebackend.model.Pago;
-import com.upn.zonestylebackend.service.PagoService;
+import com.upn.zonestylebackend.service.IPagoService; // <-- IMPORTAR INTERFAZ
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,30 +13,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PagoController {
 
-    private final PagoService service;
+    private final IPagoService service; // <-- USAR LA INTERFAZ
 
     @GetMapping
-    public List<Pago> getAll() {
-        return service.findAll();
-    }
+    public List<Pago> getAll() { return service.findAll(); }
 
     @GetMapping("/{id}")
     public ResponseEntity<Pago> getById(@PathVariable Integer id) {
-        return service.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return service.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Pago create(@RequestBody Pago pago) {
-        return service.save(pago);
-    }
+    public Pago create(@RequestBody Pago pago) { return service.save(pago); }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Pago> update(
-            @PathVariable Integer id,
-            @RequestBody Pago pago) {
-
+    public ResponseEntity<Pago> update(@PathVariable Integer id, @RequestBody Pago pago) {
         return service.findById(id).map(existing -> {
             pago.setIdPago(existing.getIdPago());
             return ResponseEntity.ok(service.save(pago));
@@ -45,12 +36,10 @@ public class PagoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
-
         if (service.findById(id).isPresent()) {
             service.deleteById(id);
             return ResponseEntity.noContent().build();
         }
-
         return ResponseEntity.notFound().build();
     }
 }
