@@ -1,5 +1,6 @@
 package com.upn.zonestylebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; // <-- 1. Importa esto
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ public class Usuario {
     @Column(name = "id_usuario")
     private Integer idUsuario;
 
+    @JsonIgnore // <-- 2. Añade esto para evitar que el rol serialice de regreso al usuario y cause bucle
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rol", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

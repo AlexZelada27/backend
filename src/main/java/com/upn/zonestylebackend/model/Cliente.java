@@ -1,5 +1,6 @@
 package com.upn.zonestylebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; // <-- 1. Importar JsonIgnore
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,22 +12,30 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name = "cliente")
 public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @Column(name = "id_cliente")
     private Integer idCliente;
-
 
     @Column(nullable = false, length = 100)
     private String nombre;
 
-
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 20)
     private String telefono;
-
 
     @Column(nullable = false, length = 100)
     private String correo;
+
+    @JsonIgnore // <-- 2. Usar JsonIgnore para evitar el error de proxy LAZY al serializar
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "id_usuario",
+            unique = true,
+            foreignKey = @ForeignKey(name = "FK_CLIENTE_USUARIO")
+    )
+    private Usuario usuario;
 }

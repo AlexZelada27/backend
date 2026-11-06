@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name = "pago") // Opcional, asegura el nombre de la tabla
 public class Pago {
 
     @Id
@@ -21,10 +22,12 @@ public class Pago {
     @EqualsAndHashCode.Include
     private Integer idPago;
 
-    @Column(nullable = false)
+    // Mapeamos explícitamente la columna 'monto'
+    @Column(name = "monto", nullable = false)
     private Double monto;
 
-    @Column(nullable = false, length = 50)
+    // Mapeamos explícitamente la columna 'metodo_pago'
+    @Column(name = "metodo_pago", nullable = false, length = 50)
     private String metodoPago;
 
     @JsonIgnore

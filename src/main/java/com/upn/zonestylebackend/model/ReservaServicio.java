@@ -1,11 +1,11 @@
 package com.upn.zonestylebackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 
 @Data
 @NoArgsConstructor
@@ -19,7 +19,7 @@ public class ReservaServicio {
     @EqualsAndHashCode.Include
     private Integer idReservaServicio;
 
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(
             name = "id_reserva",
@@ -28,7 +28,7 @@ public class ReservaServicio {
     )
     private Reserva reserva;
 
-
+    @JsonIgnore // <-- Agregado aquí para evitar el bucle infinito con Servicio
     @ManyToOne
     @JoinColumn(
             name = "id_servicio",
@@ -36,7 +36,6 @@ public class ReservaServicio {
             foreignKey = @ForeignKey(name = "FK_RESERVASERVICIO_SERVICIO")
     )
     private Servicio servicio;
-
 
     @Column(nullable = false)
     private Double precio;

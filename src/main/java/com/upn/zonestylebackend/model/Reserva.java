@@ -15,11 +15,13 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@Table(name = "reserva")
 public class Reserva {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
+    @Column(name = "id_reserva")
     private Integer idReserva;
 
     @ManyToOne
@@ -62,10 +64,10 @@ public class Reserva {
     )
     private SalaEstudio sala;
 
-    @Column(nullable = false, length = 30)
+    @Column(name = "estado", nullable = false, length = 30)
     private String estado;
 
-    @Column(nullable = false)
+    @Column(name = "fecha_reserva", nullable = false)
     private LocalDate fechaReserva;
 
     @JsonIgnore

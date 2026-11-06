@@ -1,7 +1,8 @@
 package com.upn.zonestylebackend.controller;
 
+import com.upn.zonestylebackend.dto.ReservaDTO;
 import com.upn.zonestylebackend.model.Reserva;
-import com.upn.zonestylebackend.service.IReservaService; // <-- IMPORTAR INTERFAZ
+import com.upn.zonestylebackend.service.IReservaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +14,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservaController {
 
-    private final IReservaService service; // <-- USAR LA INTERFAZ
+    private final IReservaService service;
 
     @GetMapping
-    public List<Reserva> getAll() { return service.findAll(); }
+    public List<Reserva> getAll() {
+        return service.findAll();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Reserva> getById(@PathVariable Integer id) {
@@ -24,14 +27,16 @@ public class ReservaController {
     }
 
     @PostMapping
-    public Reserva create(@RequestBody Reserva reserva) { return service.save(reserva); }
+    public ResponseEntity<String> create(@RequestBody ReservaDTO dto) {
+        service.registrarReservaCompleta(dto);
+        return ResponseEntity.ok("¡Reserva y pago registrados con éxito!");
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Reserva> update(@PathVariable Integer id, @RequestBody Reserva reserva) {
-        return service.findById(id).map(existing -> {
-            reserva.setIdReserva(existing.getIdReserva());
-            return ResponseEntity.ok(service.save(reserva));
-        }).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Reserva> update(@PathVariable Integer id, @RequestBody ReservaDTO dto) {
+        // Llama al método de actualización en tu capa de servicio
+        Reserva reservaActualizada = service.actualizarReserva(id, dto);
+        return ResponseEntity.ok(reservaActualizada);
     }
 
     @DeleteMapping("/{id}")
