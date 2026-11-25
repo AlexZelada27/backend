@@ -1,7 +1,8 @@
 package com.upn.zonestylebackend.controller;
 
+import com.upn.zonestylebackend.dto.ReservaServicioDTO;
 import com.upn.zonestylebackend.model.ReservaServicio;
-import com.upn.zonestylebackend.service.IReservaServicioService; // <-- IMPORTAR INTERFAZ
+import com.upn.zonestylebackend.service.IReservaServicioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +14,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservaServicioController {
 
-    private final IReservaServicioService service; // <-- USAR LA INTERFAZ
+    private final IReservaServicioService service;
 
     @GetMapping
-    public List<ReservaServicio> getAll() { return service.findAll(); }
+    public List<ReservaServicioDTO> getAll() {
+        return service.findAll().stream()
+                .map(this::toDTO)
+                .toList();
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReservaServicio> getById(@PathVariable Integer id) {
-        return service.findById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<ReservaServicioDTO> getById(@PathVariable Integer id) {
+        return service.findById(id)
+                .map(rs -> ResponseEntity.ok(toDTO(rs)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ReservaServicio create(@RequestBody ReservaServicio reservaServicio) { return service.save(reservaServicio); }
+    public ReservaServicio create(@RequestBody ReservaServicio reservaServicio) {
+        return service.save(reservaServicio);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<ReservaServicio> update(@PathVariable Integer id, @RequestBody ReservaServicio reservaServicio) {
@@ -41,5 +50,12 @@ public class ReservaServicioController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    private ReservaServicioDTO toDTO(ReservaServicio rs) {
+        Integer idReserva = rs.getReserva() != null ? rs.getReserva().getIdReserva() : null;
+        Integer idServicio = rs.getServicio() != null ? rs.getServicio().getIdServicio() : null;
+        Double precio = rs.getPrecio() != null ? rs.getPrecio().doubleValue() : null;
+        return new ReservaServicioDTO(idReserva, idServicio, precio);
     }
 }

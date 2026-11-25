@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +38,6 @@ public class BloqueoFechaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<BloqueoFechaDTO> create(@Valid @RequestBody BloqueoFechaDTO dto) throws Exception {
         BloqueoFecha modelo = convertToModel(dto);
@@ -55,7 +53,6 @@ public class BloqueoFechaController {
         return new ResponseEntity<>(convertToDto(guardado), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<BloqueoFechaDTO> update(@PathVariable Integer id, @Valid @RequestBody BloqueoFechaDTO dto) {
         return service.findById(id).map(existing -> {
@@ -74,7 +71,6 @@ public class BloqueoFechaController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         if (service.findById(id).isPresent()) {

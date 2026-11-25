@@ -42,36 +42,55 @@ public class UsuarioService implements IUsuarioService {
         if (usuario.getIdUsuario() == null && usuario.getFechaRegistro() == null) {
             usuario.setFechaRegistro(LocalDateTime.now());
         }
-        if (usuario.getEstado() == null) {
+        if (usuario.getEstado() == null || usuario.getEstado().isBlank()) {
             usuario.setEstado("ACTIVO");
+        }
+
+        if (usuario.getIdUsuario() != null && (usuario.getPassword() == null || usuario.getPassword().isBlank())) {
+            repository.findById(usuario.getIdUsuario()).ifPresent(actual ->
+                    usuario.setPassword(actual.getPassword())
+            );
         }
 
         // 1. Guardamos el usuario base para obtener su ID generado en la BD
         Usuario usuarioGuardado = repository.save(usuario);
 
         // 2. Evaluamos directamente el ID del rol recibido para el registro automático
-        if (usuario.getRol() != null && usuario.getRol().getIdRol() != null) {
-            Integer idRol = usuario.getRol().getIdRol();
-            String nombreCompleto = (usuario.getNombres() != null ? usuario.getNombres() : "") +
+        if (usuarioGuardado.getRol() != null && usuarioGuardado.getRol().getIdRol() != null) {
+            Integer idRol = usuarioGuardado.getRol().getIdRol();
+            String nombreCompleto = ((usuarioGuardado.getNombres() != null ? usuarioGuardado.getNombres() : "") +
                     " " +
-                    (usuario.getApellidos() != null ? usuario.getApellidos() : "");
+                    (usuarioGuardado.getApellidos() != null ? usuarioGuardado.getApellidos() : "")).trim();
 
-            // ID 3 = Cliente, ID 2 = Empleado (puedes ajustarlo si tu BD usa otros IDs)
+            // ID 3 = CLIENTE, ID 2 = EMPLEADO
             if (idRol == 3) {
-                Cliente cliente = new Cliente();
-                cliente.setNombre(nombreCompleto.trim().isEmpty() ? "Cliente Nuevo" : nombreCompleto.trim());
-                cliente.setCorreo(usuario.getCorreo());
-                cliente.setTelefono(usuario.getTelefono() != null ? usuario.getTelefono() : "000000000");
-                cliente.setUsuario(usuarioGuardado); // Vinculación OneToOne con el usuario
-                clienteRepository.save(cliente);
+                boolean yaExisteCliente = clienteRepository.findAll().stream()
+                        .anyMatch(c -> c.getUsuario() != null
+                                && c.getUsuario().getIdUsuario() != null
+                                && c.getUsuario().getIdUsuario().equals(usuarioGuardado.getIdUsuario()));
 
+                if (!yaExisteCliente) {
+                    Cliente cliente = new Cliente();
+                    cliente.setNombre(nombreCompleto.isEmpty() ? "Cliente Nuevo" : nombreCompleto);
+                    cliente.setCorreo(usuarioGuardado.getCorreo());
+                    cliente.setTelefono(usuarioGuardado.getTelefono() != null ? usuarioGuardado.getTelefono() : "000000000");
+                    cliente.setUsuario(usuarioGuardado);
+                    clienteRepository.save(cliente);
+                }
             } else if (idRol == 2) {
-                Empleado empleado = new Empleado();
-                empleado.setNombre(nombreCompleto.trim().isEmpty() ? "Empleado Nuevo" : nombreCompleto.trim());
-                empleado.setCorreo(usuario.getCorreo());
-                empleado.setCargo("Personal");
-                empleado.setUsuario(usuarioGuardado); // Vinculación OneToOne con el usuario
-                empleadoRepository.save(empleado);
+                boolean yaExisteEmpleado = empleadoRepository.findAll().stream()
+                        .anyMatch(e -> e.getUsuario() != null
+                                && e.getUsuario().getIdUsuario() != null
+                                && e.getUsuario().getIdUsuario().equals(usuarioGuardado.getIdUsuario()));
+
+                if (!yaExisteEmpleado) {
+                    Empleado empleado = new Empleado();
+                    empleado.setNombre(nombreCompleto.isEmpty() ? "Empleado Nuevo" : nombreCompleto);
+                    empleado.setCorreo(usuarioGuardado.getCorreo());
+                    empleado.setCargo("Personal");
+                    empleado.setUsuario(usuarioGuardado);
+                    empleadoRepository.save(empleado);
+                }
             }
         }
 
